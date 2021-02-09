@@ -46,12 +46,12 @@
         <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script src="js/lastfm.js"></script>
         <script type="text/javascript">
-            var apiKey = 'cf59c4a923ea2f7743bd8899ec439581';
+            var apiKey = 'LAST_FM_API_KEY';
             var playing, current;
             var external;
 
             function getTrack() {
-                $.get("https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=Beneseph&api_key=" + apiKey + "&format=json", function(data, status) {
+                $.get("https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=LAST_FM_USERNAME&api_key=" + apiKey + "&format=json", function(data, status) {
                     var tmp = data.recenttracks.track[0];
                     var now, playing;
 
