@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Home</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+
+<body class="">
+    <video autoplay muted loop id="my_video">
+        <source src="background.mp4" type="video/mp4">
+    </video>
+    <div class="container">
+        <div class="timeBlock">
+            <div id="greetings" class=""></div>
+            <div class="clock">
+                <div id="hour" class=""></div>
+                <div id="separator" class=""></div>
+                <div id="minutes" class=""></div>
+            </div>
+            <div class="clock">
+
+                <div id="day" class=""></div>
+                <div id="month" class=""></div>
+            </div>
+        </div>
+        <div class="weatherBlock">
+
+            <div class="weatherBlock__weather">
+                <div class="weather-icon">
+                    <img src="icons/OneDark/unknown.png" />
+                </div>
+                <div class="temperature-value">
+                    <p class="">- °<span class="g">c</span></p>
+                </div>
+                <div class="temperature-description">
+                    <p class=""></p>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="js/lastfm.js"></script>
+        <script type="text/javascript">
+            var apiKey = 'cf59c4a923ea2f7743bd8899ec439581';
+            var playing, current;
+            var external;
+
+            function getTrack() {
+                $.get("https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=Beneseph&api_key=" + apiKey + "&format=json", function(data, status) {
+                    var tmp = data.recenttracks.track[0];
+                    var now, playing;
+
+                    // Check if song is currently playing
+                    if (!tmp["@attr"]) {
+                        now = false;
+                    } else {
+                        now = tmp["@attr"].nowplaying;
+                    }
+
+                    if (current == tmp.url && now == playing) {
+                        // do nothing, same song still.
+                    } else {
+                        playing = now;
+                        current = tmp.url;
+
+                        // Get url for artist
+                        var d = '/',
+                            tok = tmp.url.split(d).slice(0, 5),
+                            artistUrl = tok.join(d);
+
+                        // Get direct url to large-size album cover
+                        var url = tmp.image[3]['#text'].replace(/.300x300/g, "");
+
+                        updateImage(url, tmp.name, tmp.url, tmp.artist["#text"], artistUrl, tmp.album["#text"], now);
+                    }
+
+                });
+            }
+
+            getTrack();
+            setInterval(getTrack, 5000);
+
+        </script>
+        <div class="musicBlockbg"></div>
+        <div class="musicBlock">
+
+            <div class="musicBlock__music">
+                <div class="music-icon">
+                    <img id="pic1"></img>
+                </div>
+                <div class="music-description">
+                    <p id="description"></p>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="js/greeting.js"></script>
+        <script src="js/time.js"></script>
+        <script src="js/weather.js"></script>
+        <script>
+            feather.replace();
+
+        </script>
+</body>
+
+</html>
